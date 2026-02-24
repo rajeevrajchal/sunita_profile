@@ -70,7 +70,11 @@ This project uses **Lightning CSS** with custom visitors for:
   background: env(--color-light-primary); /* #ffffff */
   box-shadow: env(--shadow-lg);
   transition: all env(--transition-base);
-  font-family: env(--font-sans);
+  font-family: env(--font-sans);         /* Montserrat */
+}
+
+.code {
+  font-family: env(--font-mono);         /* SF Mono */
 }
 
 /* Light/Dark mode */
