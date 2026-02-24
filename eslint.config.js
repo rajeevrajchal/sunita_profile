@@ -3,6 +3,7 @@ import path from 'node:path';
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
 import svelte from 'eslint-plugin-svelte';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import ts from 'typescript-eslint';
@@ -19,10 +20,35 @@ export default defineConfig(
 	...svelte.configs.prettier,
 	{
 		languageOptions: { globals: { ...globals.browser, ...globals.node } },
+		plugins: {
+			'simple-import-sort': simpleImportSort
+		},
 		rules: {
-			// typescript-eslint strongly recommend that you do not use the no-undef lint rule on TypeScript projects.
-			// see: https://typescript-eslint.io/troubleshooting/faqs/eslint/#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-			'no-undef': 'off'
+			'no-undef': 'off',
+			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+			'@typescript-eslint/no-explicit-any': 'error',
+			'simple-import-sort/imports': [
+				'error',
+				{
+					groups: [
+						[
+							'^node:',
+							'^\\$app/',
+							'^@?\\w',
+							'^@styles/',
+							'^@theme/',
+							'^@components/',
+							'^@assets/',
+							'^@modules/',
+							'^\\$lib/',
+							'^\\.\\.',
+							'^\\.',
+							'^.*\\u0000$'
+						]
+					]
+				}
+			],
+			'simple-import-sort/exports': 'error'
 		}
 	},
 	{
@@ -34,6 +60,40 @@ export default defineConfig(
 				parser: ts.parser,
 				svelteConfig
 			}
+		},
+		rules: {
+			'svelte/no-at-html-tags': 'error',
+			'svelte/no-target-blank': 'error',
+			'svelte/mustache-spacing': 'error',
+			'svelte/prefer-class-directive': 'error',
+			'svelte/shorthand-attribute': 'error',
+			'svelte/shorthand-directive': 'error',
+			'svelte/html-quotes': 'warn'
+		}
+	},
+	{
+		files: ['**/*.ts', '**/*.tsx', '**/*.svelte'],
+		rules: {
+			'@typescript-eslint/naming-convention': [
+				'error',
+				{
+					selector: 'default',
+					format: ['camelCase'],
+					leadingUnderscore: 'allow'
+				},
+				{
+					selector: 'variable',
+					format: ['camelCase', 'UPPER_CASE', 'PascalCase']
+				},
+				{
+					selector: 'typeLike',
+					format: ['PascalCase']
+				},
+				{
+					selector: 'import',
+					format: ['camelCase', 'PascalCase', 'kebab-case']
+				}
+			]
 		}
 	}
 );
