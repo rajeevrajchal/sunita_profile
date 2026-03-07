@@ -2,16 +2,13 @@
 	import '@styles/css/reset.css';
 	import '@styles/css/global.css';
 
-	import favicon from '@assets/favicon.svg';
+	import DocumentHead from '@components/document-head.svelte';
 	import Debug from '@modules/tweak-pane/debug.svelte';
 
 	let { children } = $props();
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
-
+<DocumentHead />
 <main class="app-content">
 	{@render children()}
 </main>
