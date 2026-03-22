@@ -22,9 +22,7 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	build: {
 		rolldownOptions: {
-			output: {
-				minify: { compress: { drop: ['console'] } }
-			}
+			output: {}
 		}
 	}
 });
